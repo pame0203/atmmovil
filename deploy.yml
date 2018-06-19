@@ -1,0 +1,44 @@
+#Deploy the pod
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: atmmovil
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: atmmovil
+    spec:
+      containers:
+      - name: atmmovil
+        image: mycluster.icp:8500/default/atmmovil
+        env:
+          - name: JDBC_HOST
+            value: "10.0.0.180"
+          - name: JDBC_PORT
+            value: "50000"
+          - name: JDBC_DB_NAME
+            value: "atmmovil"
+          - name: JDBC_USER
+            value: "db2inst1"
+          - name: JDBC_PASSWORD
+            value: "passw0rd"
+        ports:
+          - containerPort: 9080
+        imagePullPolicy: IfNotPresent
+---
+#Deploy the service
+apiVersion: v1
+kind: Service
+metadata:
+  name: atmmovil-service
+  labels:
+    app: atmmovil
+spec:
+  type: NodePort
+  ports:
+    - port: 9080
+      nodePort:
+  selector:
+    app: atmmovil
