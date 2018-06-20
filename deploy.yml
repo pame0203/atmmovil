@@ -12,7 +12,7 @@ spec:
     spec:
       containers:
       - name: atmmovil
-        image: mycluster.icp:8500/default/atmmovil
+        image: mycluster.icp:8500/default/atmmovil:v1
         env:
           - name: JDBC_HOST
             value: "10.0.0.180"
@@ -39,6 +39,5 @@ spec:
   type: NodePort
   ports:
     - port: 9080
-      nodePort:
   selector:
     app: atmmovil
